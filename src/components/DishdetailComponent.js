@@ -110,30 +110,33 @@ function RenderDish({ dish }) {
 }
 
 function RenderComments({ comments, postComment, dishId }) {
-    if (comments != null)
-        return (
-            <div className="col-12 m-1">
-                <h4>Comments</h4>
-                <ul className="list-unstyled">
-                    <Stagger in>
-                        {comments.map((comment) => {
-                            return (
-                                <Fade in>
-                                     <li key={comment.id}>
-                                    <p>{comment.comment}</p>
-                                    <p>-- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}</p>
-                                </li>
-                                </Fade>
-                            );
-                        })}
-                    </Stagger>
+    if (comments != null && comments.length > 0) {
+        const commentDetails = comments.map((comment) => {
+            return (
+                <ul key={comment.id} className="list-unstyled">
+                    <li>{comment.comment}</li>
+                    <li>-- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))} </li>
                 </ul>
+            );
+        });
+        return (
+            <div>
+                <h4>Comments</h4>
+                <Stagger in>
+                    <ul className="list-unstyled">
+                        <Fade in>
+                            {commentDetails}
+                            <CommentForm dishId={dishId} postComment={postComment} />
+                        </Fade>
+                    </ul>
+                </Stagger>
             </div>
-        )
+        );
+    }
     else
         return (
             <div></div>
-        )
+        );
 }
 
 
